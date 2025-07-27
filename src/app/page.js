@@ -1,11 +1,9 @@
-"use client"
+"use client";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Dialog, Disclosure } from '@headlessui/react';
+import { motion } from 'framer-motion';
+import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon, EnvelopeIcon, GlobeAltIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
-
-
 
 const navigation = [
   { name: 'Home', href: '#home', current: true },
@@ -43,30 +41,11 @@ function classNames(...classes) {
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [text, setText] = useState('');
-  const [mount,setMount]=useState (false)
-  const fullText = 'Hello, my name is Fahad, I am a Frontend Engineer';
-  const characters = fullText.split('');
-  const [displayedText, setDisplayedText] = useState([]);
+  const [mount, setMount] = useState(false);
 
-useEffect(() => {
-    setDisplayedText([]); // Reset text on page refresh
-    let index = 0;
-    const typingInterval = setInterval(() => {
-      if (index < characters.length) {
-        setDisplayedText((prev) => [...prev, characters[index]]);
-        index++;
-      } else {
-        clearInterval(typingInterval);
-      }
-    }, 100);
-    return () => clearInterval(typingInterval);
+  useEffect(() => {
+    setMount(true);
   }, []);
-
-
-  useEffect(()=>{
-    setMount(true)
-  },[])
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
@@ -76,8 +55,9 @@ useEffect(() => {
       setMobileMenuOpen(false);
     }
   };
-  
-if(!mount) return null
+
+  if (!mount) return null;
+
   return (
     <div className="bg-gray-900 text-white">
       {/* Header */}
@@ -85,7 +65,7 @@ if(!mount) return null
         <nav className="mx-auto max-w-7xl px-6 lg:px-8" aria-label="Top">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
-               <img src='../../public/logo/logo.png' alt="My Logo" style={{ width: '150px' }} />
+              {/* <Link href="/" className="text-2xl font-bold text-indigo-300">Fahad</Link> */}
             </div>
             <div className="hidden md:flex md:flex-1 md:items-center md:justify-end md:space-x-6">
               {navigation.map((item) => (
@@ -94,7 +74,7 @@ if(!mount) return null
                   href={item.href}
                   className={classNames(
                     item.current ? 'text-indigo-300' : 'text-gray-300 hover:text-indigo-300',
-                    'px-3 text-sm font-medium transition-colors duration-300'
+                    'px-3 py-2 text-sm font-medium transition-colors duration-300'
                   )}
                   onClick={(e) => handleNavClick(e, item.href)}
                 >
@@ -105,7 +85,7 @@ if(!mount) return null
             <div className="md:hidden">
               <button
                 type="button"
-                className="inline-flex items-center justify-center p-2 text-gray-300 hover:text-indigo-300"
+                className="inline-flex items-center justify-center p-2 text-gray-300 hover:text-indigo-300 rounded-md transition-colors duration-200"
                 onClick={() => setMobileMenuOpen(true)}
               >
                 <span className="sr-only">Open menu</span>
@@ -121,32 +101,31 @@ if(!mount) return null
           onClose={setMobileMenuOpen}
         >
           <div className="fixed inset-0 z-40 bg-black bg-opacity-50" />
-          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-gradient-to-b from-gray-800 to-indigo-900 p-6">
+          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-gradient-to-b from-gray-800 to-indigo-900 p-6 shadow-xl transform transition-transform duration-300">
             <div className="flex items-center justify-between">
               <Link href="/" className="text-2xl font-bold text-indigo-300">Fahad</Link>
               <button
                 type="button"
-                className="inline-flex items-center justify-center p-2 text-gray-300 hover:text-indigo-300"
+                className="inline-flex items-center justify-center p-2 text-gray-300 hover:text-indigo-300 rounded-md transition-colors duration-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>
                 <XMarkIcon className="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
-            <div className="mt-6">
+            <div className="mt-6 space-y-4">
               {navigation.map((item) => (
-                <Disclosure.Button
+                <Link
                   key={item.name}
-                  as={Link}
                   href={item.href}
                   className={classNames(
-                    item.current ? 'text-indigo-300' : 'text-gray-300 hover:text-indigo-300',
-                    'block py-2 text-base font-medium transition-colors duration-300'
+                    item.current ? 'text-indigo-300 bg-indigo-800/30' : 'text-gray-300 hover:text-indigo-300 hover:bg-indigo-800/20',
+                    'block py-3 px-4 text-base font-medium rounded-md transition-all duration-200'
                   )}
                   onClick={(e) => handleNavClick(e, item.href)}
                 >
                   {item.name}
-                </Disclosure.Button>
+                </Link>
               ))}
             </div>
           </Dialog.Panel>
@@ -156,88 +135,36 @@ if(!mount) return null
       {/* Sections */}
       <main>
         {/* Home Section */}
-         <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-indigo-950 relative overflow-hidden">
-      <div className="absolute inset-0">
-        {[...Array(10)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute bg-indigo-500 rounded-full opacity-10"
-            style={{
-              width: Math.random() * 50 + 10,
-              height: Math.random() * 50 + 10,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0.1, 0.3, 0.1],
-            }}
-            transition={{
-              duration: Math.random() * 5 + 5,
-              repeat: Infinity,
-              repeatType: 'loop',
-            }}
-          />
-        ))}
-      </div>
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-center mx-auto max-w-7xl px-6 lg:px-8 z-10"
-      >
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-indigo-200">
-          {/* <AnimatePresence> */}
-            <div className="inline-flex">
-              
-                <motion.span
-                  // key={`${char}-${index}`}
-                  initial={{ opacity: 0, x: -20 }}
-                  // animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  // transition={{ duration: 0.2, delay: index * 0.1 }}
+        <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-indigo-950">
+          <div className="text-center mx-auto max-w-7xl px-6 lg:px-8">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-indigo-200">
+              Hello, my name is Fahad, I am a Frontend Engineer
+            </h1>
+            <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto">
+              Building modern, responsive, and interactive web experiences with cutting-edge technologies.
+            </p>
+            <div className="mt-10">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  href="#projects"
+                  className="inline-block rounded-full bg-indigo-600 px-8 py-4 text-sm font-semibold text-white hover:bg-indigo-500 shadow-lg transition-all duration-300"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const target = document.querySelector('#projects');
+                    if (target) {
+                      target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
                 >
-              
-                </motion.span>
-              
-            
-                <motion.span
-                  className="animate-pulse text-indigo-400"
-                  // initial={{ opacity: 0 }}
-                  // animate={{ opacity: 1 }}
-                  // transition={{ duration: 0.5, repeat: Infinity, repeatType: 'reverse' }}
-                >
-                  Hello, my name is Fahad, I am a Frontend Engineer
-                </motion.span>
-           
+                  View My Work
+                </Link>
+              </motion.div>
             </div>
-          {/* </AnimatePresence> */}
-        </h1>
-        <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto">
-          Building modern, responsive, and interactive web experiences with cutting-edge technologies.
-        </p>
-        <div className="mt-10">
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link
-              href="#projects"
-              className="inline-block rounded-full bg-indigo-600 px-8 py-4 text-sm font-semibold text-white hover:bg-indigo-500 shadow-lg transition-all duration-300"
-              onClick={(e) => {
-                e.preventDefault();
-                const target = document.querySelector('#projects');
-                if (target) {
-                  target.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-            >
-              View My Work
-            </Link>
-          </motion.div>
-        </div>
-      </motion.div>
-    </section>
+          </div>
+        </section>
 
         {/* Projects Section */}
         <section id="projects" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 to-indigo-900 py-12">
@@ -412,7 +339,8 @@ if(!mount) return null
           </motion.div>
         </section>
       </main>
-         {/* Footer */}
+
+      {/* Footer */}
       <footer className="bg-gradient-to-r from-gray-800 to-indigo-900 py-12">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
@@ -422,14 +350,12 @@ if(!mount) return null
             viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
-            {/* Brand */}
             <div className="flex flex-col items-center md:items-start">
               <h3 className="text-2xl font-bold text-indigo-200">Fahad</h3>
               <p className="mt-2 text-gray-300 text-sm text-center md:text-left">
                 Frontend Engineer crafting modern web experiences.
               </p>
             </div>
-            {/* Navigation Links */}
             <div className="flex flex-col items-center">
               <h4 className="text-lg font-semibold text-indigo-200">Quick Links</h4>
               <ul className="mt-4 space-y-2 text-center">
@@ -446,7 +372,6 @@ if(!mount) return null
                 ))}
               </ul>
             </div>
-            {/* Social Media */}
             <div className="flex flex-col items-center md:items-end">
               <h4 className="text-lg font-semibold text-indigo-200">Connect</h4>
               <div className="mt-4 flex gap-4">
